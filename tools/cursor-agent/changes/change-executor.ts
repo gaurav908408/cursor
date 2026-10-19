@@ -111,7 +111,7 @@ export class ChangeExecutor {
           continue;
         }
 
-        // Re-check target immediately before write to avoid concurrency issues
+        // re-verify before writing
         const verifiedTarget = safeTarget(change.path, this.config.root);
         const staleCheck = checkStaleState(
           verifiedTarget,
@@ -130,7 +130,7 @@ export class ChangeExecutor {
           continue;
         }
 
-        // Record for rollback before writing
+        // save original in case we need to roll back
         this.rollbackTracker.record(
           verifiedTarget,
           change.path,

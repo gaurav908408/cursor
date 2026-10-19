@@ -25,8 +25,7 @@ export async function runAllowlistedCommand(
     let stderr = "";
     let isTimedOut = false;
 
-    // Use spawn with argument arrays directly.
-    // stdio: ["ignore", "pipe", "pipe"] prevents commands from hanging on stdin prompts.
+    // ignore stdin so it doesn't hang
     const child = spawn(cmd.executable, cmd.args, {
       cwd: options.cwd,
       shell: process.platform === "win32",

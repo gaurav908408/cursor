@@ -32,12 +32,12 @@ export async function scanProject(config: AgentConfig): Promise<ScanResult> {
       const target = safeTarget(relativePath, config.root);
       const stats = lstatSync(target);
 
-      // Skip files that are disproportionately huge
+      // too big, skip
       if (stats.size > config.maxFileChars * 4) continue;
 
       const content = readFileSync(target, "utf8");
 
-      // Skip binary files
+      // binary file, skip
       if (content.includes("\0")) continue;
 
       const truncatedContent = content.slice(0, config.maxFileChars);
@@ -60,7 +60,7 @@ export async function scanProject(config: AgentConfig): Promise<ScanResult> {
         content: truncatedContent,
       });
     } catch {
-      // Ignore inaccessible, binary, or protected files
+      // skip inaccessible or protected files
     }
   }
 

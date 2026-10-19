@@ -40,17 +40,17 @@ export class RollbackTracker {
     let failureCount = 0;
     const errors: string[] = [];
 
-    // Roll back in reverse chronological order
+    // newest first
     for (const backup of [...this.backups].reverse()) {
       try {
         if (backup.action === "create") {
-          // If the file was newly created, remove it
+          // created — delete it
           if (existsSync(backup.targetPath)) {
             unlinkSync(backup.targetPath);
           }
           successCount++;
         } else if (backup.action === "update") {
-          // If the file was updated, restore original content
+          // updated — restore original
           writeFileSync(backup.targetPath, backup.originalContent, "utf8");
           successCount++;
         }

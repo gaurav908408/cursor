@@ -13,7 +13,7 @@ export function extractJsonFromResponse(
   const candidate = response.candidates?.[0];
   const finishReason = candidate?.finishReason;
 
-  // Detect output token truncation before attempting JSON parsing
+  // cut off mid-generation
   if (finishReason === "MAX_TOKENS") {
     const limitInfo = maxOutputTokens ? ` (${maxOutputTokens} tokens)` : "";
     throw new Error(
@@ -47,7 +47,7 @@ export function extractJsonFromResponse(
 export function cleanJsonText(text: string): string {
   let cleaned = text.trim();
 
-  // Strip Markdown code block wrapper if present
+  // strip ```json fences if present
   if (cleaned.startsWith("```")) {
     cleaned = cleaned.replace(/^```(?:json)?\r?\n?/, "");
     cleaned = cleaned.replace(/\r?\n?```\s*$/, "");
@@ -63,7 +63,7 @@ export function parseJsonSafely<T = unknown>(jsonText: string): T {
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
 
-    // Check for truncation symptoms
+    // looks like truncation
     if (
       errorMessage.includes("Unterminated string") ||
       errorMessage.includes("Unexpected end of JSON input") ||

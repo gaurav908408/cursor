@@ -11,7 +11,7 @@ export function loadAgentConfig(customCwd?: string): AgentConfig {
   if (existsSync(envLocalPath)) {
     dotenv.config({ path: envLocalPath });
   } else {
-    // Fall back to default .env if present
+    // try default .env
     dotenv.config();
   }
 

@@ -12,7 +12,7 @@ export function writeAtomically(
   mkdirSync(directory, { recursive: true });
 
   if (action === "create") {
-    // Flag 'wx' ensures write fails if file already exists (atomic create)
+    // wx fails if file already exists
     writeFileSync(targetPath, content, {
       encoding: "utf8",
       flag: "wx",
@@ -20,7 +20,7 @@ export function writeAtomically(
     return;
   }
 
-  // For updates: write to a temporary file in the same directory, then rename
+  // write to tmp, then rename
   const temporaryPath = path.join(
     directory,
     `.cursor-agent-${randomUUID()}.tmp`
@@ -38,7 +38,7 @@ export function writeAtomically(
       try {
         unlinkSync(temporaryPath);
       } catch {
-        // Ignore unlink error during cleanup
+        // cleanup failed, ignore
       }
     }
   }

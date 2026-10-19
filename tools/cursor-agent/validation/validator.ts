@@ -25,11 +25,11 @@ export async function runPostApplyValidation(
       const pkg = JSON.parse(readFileSync(packageJsonPath, "utf8")) as { scripts?: Record<string, string> };
       packageScripts = pkg.scripts || {};
     } catch {
-      // Ignore package.json parse failure
+      // ignore, best effort
     }
   }
 
-  // Determine available checks
+  // figure out what's available
   const candidates: Array<keyof typeof ALLOWLISTED_COMMANDS> = [];
 
   if (existsSync(tsconfigPath)) {
