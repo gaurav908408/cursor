@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "agent": "tsx tools/cursor-agent/index.ts"
+    "agent": "tsx tools/cursor-agent/index.ts",
+    "agent:test": "tsx --test tools/cursor-agent/__tests__/*.test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.30.0",
